@@ -1,4 +1,4 @@
-<?php include "inc/header.php"; ?>
+<?php session_start(); include "inc/header.php"; ?>
 
 <section class="hero-wrap hero-wrap-2" style="background-image: url('assets/img/bg_2.jpg');" data-stellar-background-ratio="0.5">
   <div class="overlay"></div>
@@ -67,7 +67,7 @@
             <h3 class="heading-2 my-4">مشتملات الجلسة</h3>
             <ul class="pricing-text mb-5">
               <li>تنظيف بشرة عميق</li>
-              <li>مساج استرخائي</li>
+              <li>مساج استرخاء</li>
               <li>ماسك مغذي للوجه</li>
               <li>كريم واقي شمس</li>
             </ul>
@@ -112,5 +112,4 @@
     </div>
   </div>
 </section>
-
 <?php include "inc/footer.php"; ?>

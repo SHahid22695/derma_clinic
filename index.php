@@ -1,20 +1,29 @@
 <?php
-
 session_start();
-
-// 
-if (!isset($_SESSION['email'])) {
-   
+if (!isset($_SESSION['logged']) || $_SESSION['logged'] !== TRUE) {
     header("Location: login.php?error=please login first");
     exit(); 
 }
 $nav_class = '';
-
-
 include "inc/header.php"; 
 ?>
 
-
+<?php if (isset($_GET['error'])): ?>
+<div style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 90%; max-width: 500px;">
+  <div class="alert alert-danger text-center shadow" style="border-radius: 12px; border-right: 5px solid #dc3545;">
+    <strong>!</strong> 
+    <?php
+      $err = $_GET['error'];
+      if ($err == 'missingData') echo 'الرجاء تعبئة جميع الحقول!';
+      elseif ($err == 'invalidService') echo 'الخدمة غير موجودة!';
+      elseif ($err == 'invalidDoctor') echo 'الدكتور غير موجود!';
+      elseif ($err == 'bookingFailed') echo 'فشل الحجز، الرجاء المحاولة مرة أخرى!';
+      else echo htmlspecialchars($err);
+    ?>
+    <button type="button" class="btn-close float-start" onclick="this.parentElement.style.display='none'" aria-label="إغلاق"></button>
+  </div>
+</div>
+<?php endif; ?>
 
 <section class="hero-wrap js-fullheight" style="background-image: url('assets/img/bg_1.jpg');" data-stellar-background-ratio="0.5">
   <div class="overlay"></div>
@@ -223,10 +232,10 @@ include "inc/header.php";
             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
               <div class="card-body text-left">
                 <ul>
-                  <li class="d-flex"><span>Face Treatments</span><span>40 min.</span><span>$10</span></li>
-                  <li class="d-flex"><span>Nail Treatments</span><span>30 min.</span><span>$20</span></li>
-                  <li class="d-flex"><span>Medical Treatments</span><span>60 min.</span><span>$10</span></li>
-                  <li class="d-flex"><span>Hair Treatments</span><span>30 min.</span><span>$30</span></li>
+                  <li class="d-flex"><span>Face Treatments</span><span>40 min.</span><span>$100</span></li>
+                  <li class="d-flex"><span>Nail Treatments</span><span>30 min.</span><span>$200</span></li>
+                  <li class="d-flex"><span>Medical Treatments</span><span>60 min.</span><span>$100</span></li>
+                  <li class="d-flex"><span>Hair Treatments</span><span>30 min.</span><span>$300</span></li>
                 </ul>
               </div>
             </div>
@@ -243,10 +252,10 @@ include "inc/header.php";
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
               <div class="card-body text-left">
                 <ul>
-                  <li class="d-flex"><span>Face Treatments</span><span>40 min.</span><span>$10</span></li>
-                  <li class="d-flex"><span>Nail Treatments</span><span>30 min.</span><span>$20</span></li>
-                  <li class="d-flex"><span>Medical Treatments</span><span>60 min.</span><span>$10</span></li>
-                  <li class="d-flex"><span>Hair Treatments</span><span>30 min.</span><span>$30</span></li>
+                  <li class="d-flex"><span>Face Treatments</span><span>40 min.</span><span>$100</span></li>
+                  <li class="d-flex"><span>Nail Treatments</span><span>30 min.</span><span>$200</span></li>
+                  <li class="d-flex"><span>Medical Treatments</span><span>60 min.</span><span>$100</span></li>
+                  <li class="d-flex"><span>Hair Treatments</span><span>30 min.</span><span>$300</span></li>
                 </ul>
               </div>
             </div>
@@ -528,5 +537,4 @@ include "inc/header.php";
     </div>
   </div>
 </section>
-
 <?php include "inc/footer.php"; ?>

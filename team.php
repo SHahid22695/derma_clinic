@@ -1,4 +1,4 @@
-<?php include "inc/header.php"; ?>
+<?php session_start(); include "inc/header.php"; ?>
 
 <section class="hero-wrap hero-wrap-2" style="background-image: url('assets/img/bg_2.jpg');" data-stellar-background-ratio="0.5">
   <div class="overlay"></div>
@@ -84,5 +84,4 @@
     </div>
   </div>
 </section>
-
 <?php include "inc/footer.php"; ?>

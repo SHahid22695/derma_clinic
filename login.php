@@ -1,24 +1,19 @@
 <?php 
-
 session_start();
 
-if (isset($_SESSION['email'])) {
+if (isset($_SESSION['logged']) && $_SESSION['logged'] === TRUE) {
     header("Location: index.php");
     exit();
 }
-
 $page = 'login.php'; 
 include "inc/header.php"; 
 ?>
-
 <section class="ftco-section">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-5">
         <div class="card p-5 shadow-sm border-0" style="border-radius: 15px;">
-          <h3 class="text-center mb-4">Login</h3>
-
-          
+        <h3 class="text-center mb-4">Login</h3>
           <?php if(isset($_GET['error'])): ?>
             <div class="alert alert-danger text-center">
               <?php
@@ -32,12 +27,10 @@ include "inc/header.php";
               ?>
             </div>
           <?php endif; ?>
-
+          
           <?php if(isset($_GET['success'])): ?>
             <div class="alert alert-success text-center">Account created! Please login.</div>
           <?php endif; ?>
-
-          
           <form action="validateLogin.php" method="POST">
             <div class="form-group">
               <label>Email</label>
@@ -57,8 +50,6 @@ include "inc/header.php";
     </div>
   </div>
 </section>
-
 <?php 
-
 include "inc/footer.php"; 
 ?>

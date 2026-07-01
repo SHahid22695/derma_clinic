@@ -1,22 +1,18 @@
 <?php
+session_start();
 include "config/db.php";
-
+include "inc/header.php"; 
 $services_sql = "SELECT * FROM services";
 $services_result = mysqli_query($conn, $services_sql);
 
-session_start();
-if (!isset($_SESSION['logged']) || $_SESSION['logged'] !== TRUE) {
+if (!isset($_SESSION['logged']) || $_SESSION['logged'] !== TRUE) 
+  {
     header("Location: login.php?error=please login first");
     exit();
-}
+  }
 $page = 'booking.php';
 $nav_class = 'ftco-navbar-light-2';
-
-include "inc/header.php"; 
-
-
 ?>
-
     <section class="hero-wrap hero-wrap-2" style="background-image: url('assets/img/bg_2.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
@@ -37,21 +33,17 @@ include "inc/header.php";
               <h3 class="text-center mb-4">Book Your Treatment</h3>
               <form action="add_booking.php" method="POST">
                 <div class="form-group">
-  <label>(Select Service)</label>
+                  
+                <label>(Select Service)</label>
   <select name="service_id" class="form-control" required style="text-align: start !important;">
     <option value="" disabled selected>-- اختر من الخدمات المتاحة --</option>
     <?php 
-    
     if (mysqli_num_rows($services_result) > 0) {
         while($service_row = mysqli_fetch_assoc($services_result)) {
             echo "<option value='" . $service_row['id'] . "'>" . htmlspecialchars($service_row['title']) . " (" . $service_row['price'] . " ILS)</option>";
         }
     } else {
-        
-        echo "<option value='1'>العناية بالبشرة (Skin Care)</option>";
-        echo "<option value='2'>تدليك الجسم (Body Massage)</option>";
-        echo "<option value='3'>العلاج بالروائح (Aromatherapy)</option>";
-        echo "<option value='4'>السبا العشبي (Herbal Spa)</option>";
+        echo "<option value='' disabled>-- لا توجد خدمات متاحة حالياً --</option>";
     }
     ?>
   </select>
@@ -60,12 +52,16 @@ include "inc/header.php";
   <label>(Select Specialist)</label>
   <select name="doctor_id" class="form-control" required style="text-align: start !important;">
   <option value="" disabled selected>-- اختر الطبيب/ة --</option>
-    <option value="1">Dr. Sarah (Skincare Specialist)</option>
-    <option value="2">Dr. Emily (Massage Therapist)</option>
+  <?php
+  $doctors_result = mysqli_query($conn, "SELECT id, name, specialty FROM doctors");
+  if (mysqli_num_rows($doctors_result) > 0) {
+      while($doc = mysqli_fetch_assoc($doctors_result)) {
+          echo "<option value='" . $doc['id'] . "'>" . htmlspecialchars($doc['name']) . " (" . htmlspecialchars($doc['specialty']) . ")</option>";
+      }
+  }
+  ?>
   </select>
 </div>
-
-
                 <div class="form-group">
                   <label>Appointment Date</label>
                   <input type="date" name="appointment_date" class="form-control" required>
@@ -96,24 +92,15 @@ include "inc/header.php";
                   </thead>
                   <tbody>
                     <?php
-                    include "config/db.php";
                     $current_user_id = $_SESSION['id'];
-                    $stmt_p = $conn->prepare("SELECT id FROM patients WHERE user_id = ?");
-                    $stmt_p->bind_param("i", $current_user_id);
-                    $stmt_p->execute();
-                    $res_p = $stmt_p->get_result();
-                    $p_row = $res_p->fetch_assoc();
-                    $patient_id = $p_row['id'] ?? 0;
-      
-$query_user = "SELECT * FROM appointments WHERE patient_id = ? ORDER BY id DESC";
+$query_user = "SELECT * FROM appointments WHERE user_id = ? ORDER BY id DESC";
 $stmt_user = $conn->prepare($query_user);
-
+$result_user = false;
 if ($stmt_user) {
-    
-    $stmt_user->bind_param("i", $_SESSION['id']);
+    $stmt_user->bind_param("i", $current_user_id);
     $stmt_user->execute();
     $result_user = $stmt_user->get_result();
-    }
+}
                     if(mysqli_num_rows($result_user) > 0) {
                         while($user_row = mysqli_fetch_assoc($result_user)) {
                             echo "<tr>";
@@ -141,5 +128,4 @@ if ($stmt_user) {
         </div>
       </div>
     </section>
-
     <?php include "inc/footer.php"; ?>

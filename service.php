@@ -1,4 +1,4 @@
-<?php include "inc/header.php"; ?>
+<?php session_start(); include "inc/header.php"; ?>
 
 <section class="hero-wrap hero-wrap-2" style="background-image: url('assets/img/bg_2.jpg');" data-stellar-background-ratio="0.5">
   <div class="overlay"></div>
@@ -79,10 +79,10 @@
             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
               <div class="card-body text-left">
                 <ul>
-                  <li class="d-flex"><span>Face Treatments</span><span>40 min.</span><span>$10</span></li>
-                  <li class="d-flex"><span>Nail Treatments</span><span>30 min.</span><span>$20</span></li>
-                  <li class="d-flex"><span>Medical Treatments</span><span>60 min.</span><span>$10</span></li>
-                  <li class="d-flex"><span>Hair Treatments</span><span>30 min.</span><span>$30</span></li>
+                  <li class="d-flex"><span>Face Treatments</span><span>40 min.</span><span>$100</span></li>
+                  <li class="d-flex"><span>Nail Treatments</span><span>30 min.</span><span>$250</span></li>
+                  <li class="d-flex"><span>Medical Treatments</span><span>60 min.</span><span>$540</span></li>
+                  <li class="d-flex"><span>Hair Treatments</span><span>30 min.</span><span>$380</span></li>
                 </ul>
               </div>
             </div>
@@ -98,10 +98,10 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
               <div class="card-body text-left">
                 <ul>
-                  <li class="d-flex"><span>Face Treatments</span><span>40 min.</span><span>$10</span></li>
-                  <li class="d-flex"><span>Nail Treatments</span><span>30 min.</span><span>$20</span></li>
-                  <li class="d-flex"><span>Medical Treatments</span><span>60 min.</span><span>$10</span></li>
-                  <li class="d-flex"><span>Hair Treatments</span><span>30 min.</span><span>$30</span></li>
+                  <li class="d-flex"><span>Face Treatments</span><span>40 min.</span><span>$100</span></li>
+                  <li class="d-flex"><span>Nail Treatments</span><span>30 min.</span><span>$250</span></li>
+                  <li class="d-flex"><span>Medical Treatments</span><span>60 min.</span><span>$540</span></li>
+                  <li class="d-flex"><span>Hair Treatments</span><span>30 min.</span><span>$380</span></li>
                 </ul>
               </div>
             </div>
@@ -152,5 +152,4 @@
     </div>
   </div>
 </section>
-
 <?php include "inc/footer.php"; ?>

@@ -8,31 +8,54 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
-$patient_id       = $_SESSION['id'];
+$user_id          = $_SESSION['id'];
+$doctor_id        = intval($_POST['doctor_id'] ?? 0); 
+$service_id       = intval($_POST['service_id'] ?? 0);
+$appointment_date = validate($_POST['appointment_date'] ?? '');
+$appointment_time = validate($_POST['appointment_time'] ?? '');
 
-$service_id       = !empty($_POST['service_id']) ? validate($_POST['service_id']) : 1;
-$appointment_date = validate($_POST['appointment_date']);
-$appointment_time = validate($_POST['appointment_time']);
 
+if ($doctor_id < 1 || $service_id < 1 || empty($appointment_date) || empty($appointment_time)) {
+    header("Location: index.php?error=missingData");
+    exit();
+}
 
-$sql = "INSERT INTO appointments (patient_id, service_id, appointment_date, appointment_time, status) 
-        VALUES (?, ?, ?, ?, 'pending')";
+$check = $conn->prepare("SELECT id FROM services WHERE id = ?");
+$check->bind_param("i", $service_id);
+$check->execute();
+if ($check->get_result()->num_rows === 0) {
+    header("Location: index.php?error=invalidService");
+    exit();
+}
 
+$check = $conn->prepare("SELECT id FROM doctors WHERE id = ?");
+$check->bind_param("i", $doctor_id);
+$check->execute();
+if ($check->get_result()->num_rows === 0) {
+    header("Location: index.php?error=invalidDoctor");
+    exit();
+}
+
+$sql = "INSERT INTO appointments (user_id, doctor_id, service_id, appointment_date, appointment_time, status) 
+        VALUES (?, ?, ?, ?, ?, 'pending')";
 $statement = $conn->prepare($sql);
 
 if ($statement) {
-    
-    $statement->bind_param("iiss", $patient_id, $service_id, $appointment_date, $appointment_time);
-
+    $statement->bind_param("iiiss", $user_id, $doctor_id, $service_id, $appointment_date, $appointment_time);
     if ($statement->execute()) {
-        
-        header("Location: index.php?success=appointment booked");
+      
+        header("Location: index.php?success=booked");
         exit();
     } else {
-        echo "حدث خطأ أثناء تنفيذ الحجز: " . $statement->error;
+      
+        error_log("Booking Error: " . $statement->error);
+        header("Location: index.php?error=bookingFailed");
+        exit();
     }
 } else {
-    echo "فشل في تجهيز الاستعلام: " . $conn->error;
+    error_log("Prepare Error: " . $conn->error);
+    header("Location: index.php?error=bookingFailed");
+    exit();
 }
 $conn->close();
 ?>
