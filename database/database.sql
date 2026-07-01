@@ -5,16 +5,14 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'client') DEFAULT 'client',
     phone VARCHAR(15) NOT NULL,
-     age INT(3) NOT NULL, 
-     image VARCHAR(255) NULL 
+    age INT NOT NULL, 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE doctors (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    specialty VARCHAR(100) NOT NULL,
-    image VARCHAR(255) NULL
+    specialty VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE services (
@@ -22,9 +20,9 @@ CREATE TABLE services (
     title VARCHAR(100) NOT NULL,
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
-    duration INT NOT NULL,
-    image VARCHAR(255) NULL
+    duration INT NOT NULL
 );
+
 
 CREATE TABLE appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -35,10 +33,29 @@ CREATE TABLE appointments (
     appointment_time TIME NOT NULL,
     status ENUM('pending', 'approved', 'canceled') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -- كل موعد له زبون واحد
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    -- كل موعد له دكتور واحد
     FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE,
+    -- كل موعد له خدمة واحدة
     FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE
 );
+
+ 
+
+
+INSERT INTO services (title, description, price, duration) VALUES
+('Face Treatments', 'Face Treatments', 100.00, 40),
+('Nail Treatments', 'Nail Treatments', 250.00, 30),
+('Medical Treatments', 'Medical Treatments', 540.00, 60),
+('Hair Treatments', 'Hair Treatments', 380.00, 30);
+
+
+
+
+INSERT INTO doctors (name, specialty) VALUES
+('Shahd Assaf', 'skin care');
+
 
 CREATE TABLE reviews (
     id INT AUTO_INCREMENT PRIMARY KEY,
